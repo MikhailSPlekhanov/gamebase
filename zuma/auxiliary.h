@@ -1,5 +1,5 @@
 #pragma once
-
+//тут лежат цвета, координаты, шары, летающие шары, л€гушка и дырка.
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
@@ -55,4 +55,34 @@ class FlyingBall {
   Coords coords;
   float vx, vy;
   Colour colour;
+};
+
+class Frog {
+ public:
+  Frog();
+  Frog(const float x, const float y);
+  Frog(const Frog&) = default;
+  ~Frog() = default;
+
+  void set_angle(const Coords& coords);
+  float get_angle(const Coords& coords);
+  void shoot();
+  void generate_next_colour();
+
+ private:
+  Coords coords;
+  float angle, shoot_speed;
+  Colour current_colour, next_colour;
+};
+
+class EndHole {
+ public:
+  EndHole(float x, float y, float ang);
+  EndHole(const EndHole&) = default;
+  ~EndHole() = default;
+  Coords get_position();
+
+ private:
+  Coords coords;
+  float angle;
 };
