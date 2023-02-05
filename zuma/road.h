@@ -8,33 +8,35 @@
 #include <vector>
 using namespace std;
 
-class Path {
+class Path { //класс пути: определяет форму дороги и обеспечивает взаимодействие с ней
  public:
   Path(const std::vector<Coords>& dots);
   Path(const Path&) = default;
   ~Path() = default;
-  Coords return_xy(const float& pos) const;
-  float getLen() const;
-  float getDpos() const;
+
+  Coords return_xy(const float& pos) const; //возвращает координаты по позиции pos
+  float getLen() const; // возвращает длину пути
+  float getDpos() const; // возвращает dpos
+  Coords getDotCoords(int i); // возвращает координаты iой опорной точки
+  int getDotsSize(); //возвращает количество опорных точек
 
  private:
-  std::vector<Coords> dots;
-  float len;
-  float dpos;
+  std::vector<Coords> dots; //опорные точки по которым происходит построение траектории
+  float len; //длина пути
+  float dpos; //разность в pos между соседними шарами
 };
 
 
-class Road {//класс дороги хранит массив шаров на ней, свою дырку и свою форму(Path). Также он может двигать шары и добавлять новые в начало пути
+class Road {//класс дороги: хранит массив шаров на ней, свою дырку и свою форму(Path). Также он может двигать шары и добавлять новые в начало пути
  public:
-  Road(Path& path, std::vector<Ball>& balls, EndHole& endhole);
+  Road(Path& path);
   Road(const Road&) = default;
   ~Road() = default;
   
-  void insertBall(int i, Ball* ball);//вставляет указатель на шар ball на позицию i в вектор очереди balls
+  void insertBall(int i, Ball& ball);//вставляет указатель на шар ball на позицию i в вектор очереди balls
   void move();//двигает все шары
-  void gameOver(); //сбрасывает все шары в дырку
-  void checkGameOver(); //проверяет столкновение с дыркой
-  bool checkForNewBall(); //Вставляет в начало очереди новый шар если надо
+  bool checkGameOver(); //проверяет столкновение с дыркой
+  void addNewBall(); //Вставляет в начало очереди новый шар если надо
 
   //работа с классом Ball
   int getBallsSize() const;//возвращает длину очереди (число шаров на дороге)
@@ -47,12 +49,13 @@ class Road {//класс дороги хранит массив шаров на ней, свою дырку и свою форму(P
 
   //работа с классом Path
   float getPathLen() const;//возвращает длину пути
-  float getPathDeltaPos() const;//возвращает разность в pos между соседними шарами
+  float getPathDpos() const;//возвращает разность в pos между соседними шарами
 
  
  private:
-  std::vector<std::unique_ptr<Ball>> balls; //первым номером идет первый шар, в конец добавляются новые шары.
-  std::vector<std::unique_ptr<Ball>> ballsToGo; //массив шаров до выезда на дорогу.
+  std::vector<std::unique_ptr<Ball>> balls; //массив шаров на дороге. первым номером идет первый шар, в конец добавляются новые шары
+  std::vector<std::unique_ptr<Ball>> ballsToGo; //массив шаров до выезда на дорогу. последний в массиве тот шар, который выезжает на дорогу
   Path path;
   EndHole endhole;
+  EndHole beginhole;
 };

@@ -11,10 +11,14 @@ class Gamefield {//класс игрового поля: хранит массивы летящих шаров, массив дор
   Gamefield(const Gamefield&) = default;
   ~Gamefield() = default;
   void GamefieldRender();
-  void collide_check();
+  void insertCollisions();
+  void popOverTripples();
+  void checkGameOver();
+  void move();
 
  private:
   std::vector<std::unique_ptr<FlyingBall>> flyingballs;
   std::vector<std::unique_ptr<Road>> roads;
   Frog frog;
+  bool game_over = false;
 };

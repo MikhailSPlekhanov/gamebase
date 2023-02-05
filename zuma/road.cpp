@@ -25,59 +25,89 @@ Coords Path::return_xy(const float& pos) const {
 float Path::getLen() const {
   return this->len;
 };
-
 float Path::getDpos() const {
   return this->dpos;
+}
+Coords Path::getDotCoords(int i) {
+  return this->dots[i];
+}
+int Path::getDotsSize() {
+  return this->dots.size();
 };
 
 
-Road::Road(Path& path, std::vector<Ball>& balls, EndHole& endhole)
-    : path{path}, endhole{endhole} {
-  for (int i = 0; i < balls.size(); i++) {
-    (this->balls).push_back(make_unique<Ball>(balls[i]));
+Road::Road(Path& path)
+    : path{path} {
+  this->endhole = EndHole(path.getDotCoords(this->path.getDotsSize())); //создали конечную дырку
+  this->beginhole = EndHole(path.getDotCoords(0)); //создали конченую дырку
+  Ball* ball;
+  for (int j = 0; j < NUM_TO_GO; j++) { //заполнили очередь шаров на выезд шарами рандомного цвета
+    ball = new Ball(path.getDotCoords(0), 0, Colour(rand() % 4));
+    this->ballsToGo.push_back(std::make_unique<Ball>(ball));
   }
 };
 
-void Road::insertBall(int i, Ball* ball) {
-  this->balls.insert(i, make_unique<Ball>(ball));
+void Road::insertBall(int i, Ball& ball) { 
+  this->balls.push_back(std::make_unique<Ball>(ball)); //вставили в конец очереди новый шар (FlyingBall который врезался)
+  for (int j = this->balls.size(); j > i; j--) { // с помощью swap двигаем его на свое место в очереди
+    this->balls[j].swap(this->balls[j - 1]); 
+  }
+  float oldPos;
+  for (int k = 0; k < i; k++) { // меняем pos всех шаров перед вставленным
+    oldPos = this->balls[k]->get_position();
+    this->balls[k]->set_position(oldPos + this->getPathDpos());
+  }
 };
 
 void Road::move() {
+  if (this->balls[this->balls.size()]->get_position() < 2 * RADIUS / this->path.getLen() ||
+      this->ballsToGo.size() == 0) { //проверили, что последний шар только что выехал на дорогу (то есть его толкают) или что больше некому выезжать
+    Ball* lastBall = this->balls[this->balls.size()].release(); //получили указатель на последний шар
+    lastBall->set_position(lastBall->get_position() + dt * ROAD_SPEED); //подвинули последний шар
+    for (int i = this->balls.size() - 1; i > -1; i--) {
+      if (this->balls[i]->get_position() - 2 * RADIUS < this->balls[i + 1]->get_position()) { // проверяем что предыдущий шар толкнул следующий
+        this->balls[i]->set_position(this->balls[i]->get_position() + dt * ROAD_SPEED); //пододвигаем следующий
+      }
+    }
+  }
+}
 
+
+bool Road::checkGameOver() {
+    return (bool(this->endhole.get_coords().dist(this->balls[0]->get_coords()) < RADIUS));
+}
+void Road::addNewBall() {
+    if ((this->balls.back()->get_position() >
+        this->path.getDpos()) && !(this->ballsToGo.empty()) ){
+    this->balls.push_back(std::move(this->ballsToGo.back()));
+    this->ballsToGo.pop_back();
+    }
 };
 
 int Road::getBallsSize() const {
   return this->balls.size();
 }
-
 Coords Road::getBallCoords(int i) const {
   return this->balls[i]->get_coords();
 }
-
 void Road::setBallCoords(int i, const Coords coords) {
   this->balls[i]->set_coords(coords);
 };
-
 float Road::getBallPosition(int i) const {
   return this->balls[i]->get_position();
 };
-
 void Road::setBallPosition(int i, const float x) {
   this->balls[i]->set_position(x);
 };
-
 Colour Road::getBallColour(int i) const {
   return this->balls[i]->get_colour();
 };
 
 
-
-
 float Road::getPathLen() const {
   return this->path.getLen();
 };
-
-float Road::getPathDeltaPos() const {
+float Road::getPathDpos() const {
   return this->path.getDpos();
 };
 

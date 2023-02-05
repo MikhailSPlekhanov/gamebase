@@ -42,7 +42,10 @@ Ball::Ball(Coords coords, Colour col)
       pos{0},
       speed{ROAD_SPEED},
       last{true},
-      push{true} {};
+      push{true} {}
+
+Ball::Ball(Coords coords, float pos, Colour col)
+    : coords{coords}, pos{pos}, colour {col} {};
 
 Coords Ball::get_coords() const {
   return this->coords;
@@ -62,6 +65,14 @@ float Ball::get_position() const {
 
 Colour Ball::get_colour() const {
   return this->colour;
+}
+
+void Ball::setPush(bool flag) {
+  this->push = flag;
+}
+
+bool Ball::getPush() {
+  return this->push;
 }
 
 
@@ -109,6 +120,10 @@ Frog::Frog(Coords& coords)
       current_colour{Colour(rand() % 4)},
       next_colour{Colour(rand() % 4)} {}
 
+Coords Frog::get_coords() {
+  return this->coords;
+}
+
 void Frog::set_angle(const Coords& coords) {
   this->angle = this->get_angle(coords);
 }
@@ -117,11 +132,12 @@ float Frog::get_angle(const Coords& coords) {
   return atan2((coords.y - this->coords.y), (coords.x - this->coords.x));
 }
 
-void Frog::shoot() {
+FlyingBall* Frog::shoot() {
   float vx = this->shoot_speed * cos(this->angle);
   float vy = this->shoot_speed * sin(this->angle);
-  FlyingBall* ball = new FlyingBall(this->coords, vx, vy,
+  FlyingBall* FB = new FlyingBall(this->coords, vx, vy,
                                     this->current_colour);
+  return FB; 
 }
 
 void Frog::generate_next_colour() {
@@ -131,9 +147,17 @@ void Frog::generate_next_colour() {
 
 
 
+EndHole::EndHole() {
+  this->coords = Coords(0, 0);
+}
+
 EndHole::EndHole(Coords& coords)
     : coords{coords} {};
 
 Coords EndHole::get_coords() {
   return (this->coords);
+}
+
+void EndHole::set_coords(Coords& coords) {
+  this->coords = coords;
 }
