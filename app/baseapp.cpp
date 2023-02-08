@@ -1,4 +1,4 @@
-#include "baseapp.h"
+п»ї#include "baseapp.h"
 
 #include <SDL.h>
 
@@ -34,7 +34,7 @@ void GameApp::Run() {
     }
 
     MouseState mouse;                                       //
-    mouse.buttons = SDL_GetMouseState(&mouse.x, &mouse.y);  // самый главный этап взаимодействия
+    mouse.buttons = SDL_GetMouseState(&mouse.x, &mouse.y);  // СЃР°РјС‹Р№ РіР»Р°РІРЅС‹Р№ СЌС‚Р°Рї РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ
     ProcessInput(SDL_GetKeyboardState(nullptr), mouse);     //
 
     SDL_SetRenderDrawColor(render::GetRenderer(), 0, 0, 0, 255);

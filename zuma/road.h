@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #include "auxiliary.h"
 
@@ -8,53 +8,56 @@
 #include <vector>
 using namespace std;
 
-class Path { //класс пути: определяет форму дороги и обеспечивает взаимодействие с ней
+class Path { //РєР»Р°СЃСЃ РїСѓС‚Рё: РѕРїСЂРµРґРµР»СЏРµС‚ С„РѕСЂРјСѓ РґРѕСЂРѕРіРё Рё РѕР±РµСЃРїРµС‡РёРІР°РµС‚ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ СЃ РЅРµР№
  public:
   Path(const std::vector<Coords>& dots);
   Path(const Path&) = default;
   ~Path() = default;
 
-  Coords return_xy(const float& pos) const; //возвращает координаты по позиции pos
-  float getLen() const; // возвращает длину пути
-  float getDpos() const; // возвращает dpos
-  Coords getDotCoords(int i); // возвращает координаты iой опорной точки
-  int getDotsSize(); //возвращает количество опорных точек
+  Coords return_xy(const float pos) const; //РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ РїРѕ РїРѕР·РёС†РёРё pos
+  float getLen() const; // РІРѕР·РІСЂР°С‰Р°РµС‚ РґР»РёРЅСѓ РїСѓС‚Рё
+  float getDpos() const; // РІРѕР·РІСЂР°С‰Р°РµС‚ dpos
+  Coords getDotCoords(int i) const; // РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ iРѕР№ РѕРїРѕСЂРЅРѕР№ С‚РѕС‡РєРё
+  int getDotsSize() const; //РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕР»РёС‡РµСЃС‚РІРѕ РѕРїРѕСЂРЅС‹С… С‚РѕС‡РµРє
 
  private:
-  std::vector<Coords> dots; //опорные точки по которым происходит построение траектории
-  float len; //длина пути
-  float dpos; //разность в pos между соседними шарами
+  std::vector<Coords> dots; //РѕРїРѕСЂРЅС‹Рµ С‚РѕС‡РєРё РїРѕ РєРѕС‚РѕСЂС‹Рј РїСЂРѕРёСЃС…РѕРґРёС‚ РїРѕСЃС‚СЂРѕРµРЅРёРµ С‚СЂР°РµРєС‚РѕСЂРёРё
+  float len; //РґР»РёРЅР° РїСѓС‚Рё
+  float dpos; //СЂР°Р·РЅРѕСЃС‚СЊ РІ pos РјРµР¶РґСѓ СЃРѕСЃРµРґРЅРёРјРё С€Р°СЂР°РјРё
 };
 
 
-class Road {//класс дороги: хранит массив шаров на ней, свою дырку и свою форму(Path). Также он может двигать шары и добавлять новые в начало пути
+class Road {//РєР»Р°СЃСЃ РґРѕСЂРѕРіРё: С…СЂР°РЅРёС‚ РјР°СЃСЃРёРІ С€Р°СЂРѕРІ РЅР° РЅРµР№, СЃРІРѕСЋ РґС‹СЂРєСѓ Рё СЃРІРѕСЋ С„РѕСЂРјСѓ(Path). РўР°РєР¶Рµ РѕРЅ РјРѕР¶РµС‚ РґРІРёРіР°С‚СЊ С€Р°СЂС‹ Рё РґРѕР±Р°РІР»СЏС‚СЊ РЅРѕРІС‹Рµ РІ РЅР°С‡Р°Р»Рѕ РїСѓС‚Рё
  public:
   Road(Path& path);
   Road(const Road&) = default;
   ~Road() = default;
   
-  void insertBall(int i, Ball& ball);//вставляет указатель на шар ball на позицию i в вектор очереди balls
-  void move();//двигает все шары
-  bool checkGameOver(); //проверяет столкновение с дыркой
-  void addNewBall(); //Вставляет в начало очереди новый шар если надо
+  void insertBall(int i, Ball& ball);//РІСЃС‚Р°РІР»СЏРµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° С€Р°СЂ ball РЅР° РїРѕР·РёС†РёСЋ i РІ РІРµРєС‚РѕСЂ РѕС‡РµСЂРµРґРё balls
+  void move();//РґРІРёРіР°РµС‚ РІСЃРµ С€Р°СЂС‹
+  bool checkGameOver(); //РїСЂРѕРІРµСЂСЏРµС‚ СЃС‚РѕР»РєРЅРѕРІРµРЅРёРµ СЃ РґС‹СЂРєРѕР№
+  void addNewBall(); //Р’СЃС‚Р°РІР»СЏРµС‚ РІ РЅР°С‡Р°Р»Рѕ РѕС‡РµСЂРµРґРё РЅРѕРІС‹Р№ С€Р°СЂ РµСЃР»Рё РЅР°РґРѕ
 
-  //работа с классом Ball
-  int getBallsSize() const;//возвращает длину очереди (число шаров на дороге)
+  //СЂР°Р±РѕС‚Р° СЃ РєР»Р°СЃСЃРѕРј Ball
+  int getBallsSize() const;//РІРѕР·РІСЂР°С‰Р°РµС‚ РґР»РёРЅСѓ РѕС‡РµСЂРµРґРё (С‡РёСЃР»Рѕ С€Р°СЂРѕРІ РЅР° РґРѕСЂРѕРіРµ)
 
-  void setBallCoords(int i, const Coords coords);//устанавливает координаты iго шара в очереди
-  Coords getBallCoords(int i) const;//возвращает координаты iго шара в очереди
-  void setBallPosition(int i, const float x);//устанавливает pos iго шара в очереди
-  float getBallPosition(int i) const;//возвращает pos iго шара в очереди
-  Colour getBallColour(int i) const;//возвращает цвет iго шара в очереди
+  void setBallCoords(int i, const Coords coords);//СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ iРіРѕ С€Р°СЂР° РІ РѕС‡РµСЂРµРґРё
+  Coords getBallCoords(int i) const;//РІРѕР·РІСЂР°С‰Р°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ iРіРѕ С€Р°СЂР° РІ РѕС‡РµСЂРµРґРё
+  void setBallPosition(int i, const float x);//СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ pos iРіРѕ С€Р°СЂР° РІ РѕС‡РµСЂРµРґРё
+  float getBallPosition(int i) const;//РІРѕР·РІСЂР°С‰Р°РµС‚ pos iРіРѕ С€Р°СЂР° РІ РѕС‡РµСЂРµРґРё
+  Colour getBallColour(int i) const;//РІРѕР·РІСЂР°С‰Р°РµС‚ С†РІРµС‚ iРіРѕ С€Р°СЂР° РІ РѕС‡РµСЂРµРґРё
+  Ball* lastBall() const;
+  Ball* firstBall() const;
 
-  //работа с классом Path
-  float getPathLen() const;//возвращает длину пути
-  float getPathDpos() const;//возвращает разность в pos между соседними шарами
+  //СЂР°Р±РѕС‚Р° СЃ РєР»Р°СЃСЃРѕРј Path
+  float getPathLen() const;//РІРѕР·РІСЂР°С‰Р°РµС‚ РґР»РёРЅСѓ РїСѓС‚Рё
+  float getPathDpos() const;//РІРѕР·РІСЂР°С‰Р°РµС‚ СЂР°Р·РЅРѕСЃС‚СЊ РІ pos РјРµР¶РґСѓ СЃРѕСЃРµРґРЅРёРјРё С€Р°СЂР°РјРё
+  Coords return_xy(float pos) const;
 
  
  private:
-  std::vector<std::unique_ptr<Ball>> balls; //массив шаров на дороге. первым номером идет первый шар, в конец добавляются новые шары
-  std::vector<std::unique_ptr<Ball>> ballsToGo; //массив шаров до выезда на дорогу. последний в массиве тот шар, который выезжает на дорогу
+  std::vector<std::unique_ptr<Ball>> balls; //РјР°СЃСЃРёРІ С€Р°СЂРѕРІ РЅР° РґРѕСЂРѕРіРµ. РїРµСЂРІС‹Рј РЅРѕРјРµСЂРѕРј РёРґРµС‚ РїРµСЂРІС‹Р№ С€Р°СЂ, РІ РєРѕРЅРµС† РґРѕР±Р°РІР»СЏСЋС‚СЃСЏ РЅРѕРІС‹Рµ С€Р°СЂС‹
+  std::vector<std::unique_ptr<Ball>> ballsToGo; //РјР°СЃСЃРёРІ С€Р°СЂРѕРІ РґРѕ РІС‹РµР·РґР° РЅР° РґРѕСЂРѕРіСѓ. РїРѕСЃР»РµРґРЅРёР№ РІ РјР°СЃСЃРёРІРµ С‚РѕС‚ С€Р°СЂ, РєРѕС‚РѕСЂС‹Р№ РІС‹РµР·Р¶Р°РµС‚ РЅР° РґРѕСЂРѕРіСѓ
   Path path;
   EndHole endhole;
   EndHole beginhole;

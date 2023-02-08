@@ -1,38 +1,39 @@
-#pragma once
-//тут лежат enum цветов, классы координат, шара, летающего шара, лягушки и дырки.
+п»ї#pragma once
+//С‚СѓС‚ Р»РµР¶Р°С‚ enum С†РІРµС‚РѕРІ, РєР»Р°СЃСЃС‹ РєРѕРѕСЂРґРёРЅР°С‚, С€Р°СЂР°, Р»РµС‚Р°СЋС‰РµРіРѕ С€Р°СЂР°, Р»СЏРіСѓС€РєРё Рё РґС‹СЂРєРё.
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
 using namespace std;
 
-const float COLLIDE_DISTANCE = 1; //расстояние, на котором шары сталкиваются
-float ROAD_SPEED = 1; //скорость движени шаров по дороге
-const float RADIUS = 1; //радиус шара
-const float dt = 1; //шаг по времени
-const int NUM_TO_GO = 10; //число шаров которые выедут после начала уровня
+const float COLLIDE_DISTANCE = 1; //СЂР°СЃСЃС‚РѕСЏРЅРёРµ, РЅР° РєРѕС‚РѕСЂРѕРј С€Р°СЂС‹ СЃС‚Р°Р»РєРёРІР°СЋС‚СЃСЏ
+float ROAD_SPEED = 1; //СЃРєРѕСЂРѕСЃС‚СЊ РґРІРёР¶РµРЅРё С€Р°СЂРѕРІ РїРѕ РґРѕСЂРѕРіРµ
+const float RADIUS = 1; //СЂР°РґРёСѓСЃ С€Р°СЂР°
+const float dt = 1; //С€Р°Рі РїРѕ РІСЂРµРјРµРЅРё
+const int NUM_TO_GO = 10; //С‡РёСЃР»Рѕ С€Р°СЂРѕРІ РєРѕС‚РѕСЂС‹Рµ РІС‹РµРґСѓС‚ РїРѕСЃР»Рµ РЅР°С‡Р°Р»Р° СѓСЂРѕРІРЅСЏ
+const float SHOOT_SPEED = 1;
 
-enum Colour { red = 0, green, blue, yellow }; // возможные цвета шаров
+enum Colour { red = 0, green, blue, yellow }; // РІРѕР·РјРѕР¶РЅС‹Рµ С†РІРµС‚Р° С€Р°СЂРѕРІ
 
-struct Coords { //структура координат (вектор). Можно прибавлять координаты (inc(dx, dy)).
+struct Coords { //СЃС‚СЂСѓРєС‚СѓСЂР° РєРѕРѕСЂРґРёРЅР°С‚ (РІРµРєС‚РѕСЂ). РњРѕР¶РЅРѕ РїСЂРёР±Р°РІР»СЏС‚СЊ РєРѕРѕСЂРґРёРЅР°С‚С‹ (inc(dx, dy)).
   Coords();
   Coords(float x, float y);
   Coords(const Coords&) = default;
   ~Coords() = default;
   
-  void inc(float dx, float dy); // увеличивает координаты на вектор (dx, dy)
-  float mod() const; // возвращает длину вектора (x,y)
+  void inc(float dx, float dy); // СѓРІРµР»РёС‡РёРІР°РµС‚ РєРѕРѕСЂРґРёРЅР°С‚С‹ РЅР° РІРµРєС‚РѕСЂ (dx, dy)
+  float mod() const; // РІРѕР·РІСЂР°С‰Р°РµС‚ РґР»РёРЅСѓ РІРµРєС‚РѕСЂР° (x,y)
   //Coords operator + (const Coords& left, const Coords& right) const;
-  float dist(const Coords& two) const; // возвращает расстояние от объекта до своего аргумента
+  float dist(const Coords& two) const; // РІРѕР·РІСЂР°С‰Р°РµС‚ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РѕР±СЉРµРєС‚Р° РґРѕ СЃРІРѕРµРіРѕ Р°СЂРіСѓРјРµРЅС‚Р°
 
   float x, y;
 };
 
-class Ball { //класс шаров, едущих по дороге
+class Ball { //РєР»Р°СЃСЃ С€Р°СЂРѕРІ, РµРґСѓС‰РёС… РїРѕ РґРѕСЂРѕРіРµ
  public:
   Ball();
   Ball(Coords coords, Colour col);
-  Ball(Coords coords, float pos, Colour col);
+  Ball(Coords coords, Colour col, float pos);
   Ball(const Ball&) = default;
   ~Ball() = default;
 
@@ -51,7 +52,7 @@ class Ball { //класс шаров, едущих по дороге
   Colour colour;
 };
 
-class FlyingBall { //класс летящих шаров
+class FlyingBall { //РєР»Р°СЃСЃ Р»РµС‚СЏС‰РµРіРѕ С€Р°СЂР°
  public:
   FlyingBall();
   FlyingBall(Coords coords, const float vx, const float vy, Colour col);
@@ -69,7 +70,7 @@ class FlyingBall { //класс летящих шаров
   Colour colour;
 };
 
-class Frog { // класс лягушки
+class Frog { // РєР»Р°СЃСЃ Р»СЏРіСѓС€РєРё
  public:
   Frog();
   Frog(Coords& coords);
@@ -77,18 +78,18 @@ class Frog { // класс лягушки
   ~Frog() = default;
 
   Coords get_coords();
-  void set_angle(const Coords& coords);//устанавливает угол поворота
-  float get_angle(const Coords& coords);//возвращает свой угол поворота (зачем??)
-  FlyingBall* shoot(); //создает новый летящий шар и возвращает указатель на него
-  void generate_next_colour(); //задает цвета следующего шара для выстрела. надо будет подправить так, чтобы подбирала цвет по уже имеющимся в очереди
+  void set_angle(const Coords& coords); //СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р°
+  float get_angle(const Coords& coords); //РІРѕР·РІСЂР°С‰Р°РµС‚ СЃРІРѕР№ СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° (Р·Р°С‡РµРј??)
+  FlyingBall* shoot(); //СЃРѕР·РґР°РµС‚ РЅРѕРІС‹Р№ Р»РµС‚СЏС‰РёР№ С€Р°СЂ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РЅР° РЅРµРіРѕ
+  void generate_next_colour(); //Р·Р°РґР°РµС‚ С†РІРµС‚Р° СЃР»РµРґСѓСЋС‰РµРіРѕ С€Р°СЂР° РґР»СЏ РІС‹СЃС‚СЂРµР»Р°. РЅР°РґРѕ Р±СѓРґРµС‚ РїРѕРґРїСЂР°РІРёС‚СЊ С‚Р°Рє, С‡С‚РѕР±С‹ РїРѕРґР±РёСЂР°Р»Р° С†РІРµС‚ РїРѕ СѓР¶Рµ РёРјРµСЋС‰РёРјСЃСЏ РІ РѕС‡РµСЂРµРґРё
 
  private:
-  Coords coords; //координаты лягушки
-  float angle, shoot_speed; //угол поворота лягушки, скорость выстрела
-  Colour current_colour, next_colour; //цвет выстрела и следующего за ним шара
+  Coords coords; //РєРѕРѕСЂРґРёРЅР°С‚С‹ Р»СЏРіСѓС€РєРё
+  float angle, shoot_speed; //СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° Р»СЏРіСѓС€РєРё, СЃРєРѕСЂРѕСЃС‚СЊ РІС‹СЃС‚СЂРµР»Р°
+  Colour current_colour, next_colour; //С†РІРµС‚ РІС‹СЃС‚СЂРµР»Р° Рё СЃР»РµРґСѓСЋС‰РµРіРѕ Р·Р° РЅРёРј С€Р°СЂР°
 };
 
-class EndHole {//класс дырки. Непонятно вообще, нужен ли он. Но на всякий случай создан (для красоты). Может возвращать свои координаты.
+class EndHole { //РєР»Р°СЃСЃ РґС‹СЂРєРё. РќРµРїРѕРЅСЏС‚РЅРѕ РІРѕРѕР±С‰Рµ, РЅСѓР¶РµРЅ Р»Рё РѕРЅ. РќРѕ РЅР° РІСЃСЏРєРёР№ СЃР»СѓС‡Р°Р№ СЃРѕР·РґР°РЅ (РґР»СЏ РєСЂР°СЃРѕС‚С‹). РњРѕР¶РµС‚ РІРѕР·РІСЂР°С‰Р°С‚СЊ СЃРІРѕРё РєРѕРѕСЂРґРёРЅР°С‚С‹.
  public:
   EndHole();
   EndHole(Coords& coords);

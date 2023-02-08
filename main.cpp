@@ -1,4 +1,4 @@
-#include "app/baseapp.h"
+п»ї#include "app/baseapp.h"
 #include "snake/snake.h"
 
 #include <iostream>
@@ -34,7 +34,7 @@ class GameApp : public app::GameApp {
     AddApple();
   }
 
-  void ProcessInput(const Uint8* keyboard, const MouseState& mouse) override { // тут вставляем обработку взаимодействия
+  void ProcessInput(const Uint8* keyboard, const MouseState& mouse) override { // С‚СѓС‚ РІСЃС‚Р°РІР»СЏРµРј РѕР±СЂР°Р±РѕС‚РєСѓ РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёСЏ
     if (keyboard[SDL_SCANCODE_RIGHT]) {
       snake.SetDirection(RIGHT);
     } else if (keyboard[SDL_SCANCODE_LEFT]) {
@@ -46,12 +46,12 @@ class GameApp : public app::GameApp {
     }
   }
 
-  void Render() override { // тут вставляем функции отрисовки всех элементов
+  void Render() override { // С‚СѓС‚ РІСЃС‚Р°РІР»СЏРµРј С„СѓРЅРєС†РёРё РѕС‚СЂРёСЃРѕРІРєРё РІСЃРµС… СЌР»РµРјРµРЅС‚РѕРІ
     game_field.Render();
     snake.Render();
   }
 
-  void Update(Uint32 millis) override { // здесь все элементы обновления, но нужно знать данные от игрока
+  void Update(Uint32 millis) override { // Р·РґРµСЃСЊ РІСЃРµ СЌР»РµРјРµРЅС‚С‹ РѕР±РЅРѕРІР»РµРЅРёСЏ, РЅРѕ РЅСѓР¶РЅРѕ Р·РЅР°С‚СЊ РґР°РЅРЅС‹Рµ РѕС‚ РёРіСЂРѕРєР°
     const int kQuant = 120;
     millis_ += millis;
     if (millis_ < kQuant) {
@@ -59,7 +59,7 @@ class GameApp : public app::GameApp {
     }
     millis_ -= kQuant;
 
-    snake.UpdateState(); //тут например gamefield.updateState(){road.checkCollision(); flyingball.move(); road.move(); frog.update(mousestate)}
+    snake.UpdateState(); //С‚СѓС‚ РЅР°РїСЂРёРјРµСЂ gamefield.updateState(){road.checkCollision(); flyingball.move(); road.move(); frog.update(mousestate)}
 
     if (Cell* cell = game_field.GetCell(snake.GetHead().x, snake.GetHead().y)) {
       cell->Visit();

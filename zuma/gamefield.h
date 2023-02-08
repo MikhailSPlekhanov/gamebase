@@ -1,20 +1,26 @@
-#pragma once
+п»ї#pragma once
 
 #include "road.h"
 #include "auxiliary.h"
 
 
-class Gamefield {//класс игрового поля: хранит массивы летящих шаров, массив дорог и массив дырок. Отвечает за их взаимодействие и управление процессом игры
+class Gamefield {//РєР»Р°СЃСЃ РёРіСЂРѕРІРѕРіРѕ РїРѕР»СЏ: С…СЂР°РЅРёС‚ РјР°СЃСЃРёРІС‹ Р»РµС‚СЏС‰РёС… С€Р°СЂРѕРІ, РјР°СЃСЃРёРІ РґРѕСЂРѕРі Рё РјР°СЃСЃРёРІ РґС‹СЂРѕРє. РћС‚РІРµС‡Р°РµС‚ Р·Р° РёС… РІР·Р°РёРјРѕРґРµР№СЃС‚РІРёРµ Рё СѓРїСЂР°РІР»РµРЅРёРµ РїСЂРѕС†РµСЃСЃРѕРј РёРіСЂС‹
  public:
   Gamefield(const std::vector<Road>& roads,
             Frog& frog);
   Gamefield(const Gamefield&) = default;
   ~Gamefield() = default;
-  void GamefieldRender();
+ 
   void insertCollisions();
   void popOverTripples();
   void checkGameOver();
   void move();
+  void updateCoords();
+
+  void updateFrog(Coords mouse);
+  void shoot();
+
+  void GamefieldRender();
 
  private:
   std::vector<std::unique_ptr<FlyingBall>> flyingballs;

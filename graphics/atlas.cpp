@@ -1,4 +1,4 @@
-#include "atlas.h"
+﻿#include "atlas.h"
 #include "graphics.h"
 
 #include <algorithm>
